@@ -9,11 +9,11 @@ augimdsTest = augmentedImageDatastore(inputSize(1:2),test);
 layer = 'fc7';
 featuresTrain = activations(net,augimdsTrain,layer,'OutputAs','rows');
 featuresTest = activations(net,augimdsTest,layer,'OutputAs','rows');
-knn = fitcknn(featuresTrain, train.Labels);
+knn = fitcdiscr(featuresTrain, train.Labels);
 predicted_test_knn = predict(knn, featuresTest);
 performance_test_knn = confmat(test.Labels, predicted_test_knn);
 figure
-for i = 1:7
+for i = 1:4
     subplot(2,2,i)
     I = readimage(test,i);
     label = predicted_test_knn(i);
