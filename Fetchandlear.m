@@ -19,24 +19,24 @@ performance_test_ctree = confmat(test.Labels, predicted_test_ctree);
 predicted_test_ens = predict(ens, featuresTest);
 performance_test_ens = confmat(test.Labels, predicted_test_ens);
 figure('NumberTitle', 'off', 'Name', 'knn');
-for i = 1:4
-    subplot(2,2,i)
+for i = 1:30
+    subplot(6,5,i)
     I = readimage(test,i);
     label = predicted_test_knn(i);
     imshow(I)
     title(char(label))
 end
 figure('NumberTitle', 'off', 'Name', 'ctree');
-for i = 1:4
-    subplot(2,2,i)
+for i = 1:30
+    subplot(6,5,i)
     I = readimage(test,i);
     label = predicted_test_ctree(i);
     imshow(I)
     title(char(label))
 end
 figure('NumberTitle', 'off', 'Name', 'ensemble');
-for i = 1:4
-    subplot(2,2,i)
+for i = 1:30
+    subplot(6,5,i)
     I = readimage(test,i);
     label = predicted_test_ens(i);
     imshow(I)
