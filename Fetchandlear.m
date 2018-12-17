@@ -1,23 +1,29 @@
 close all;
 clearvars;
 
-%costruzione training/test sets
+%%Inizializzo un data store e creo la partizione di test
 imds = imageDatastore('images','IncludeSubfolders',true,'LabelSource','foldernames');
 [train,test] = splitEachLabel(imds,0.7,'randomized');
 
-%creazione della rete
+%Inizializzo densenet201
 net = densenet201;
-inputSize = net.Layers(1).InputSize;
 
+%%Ridimensiono le immagini in modo che siano compatibili con l'input di
+%%densenet e faccio una dataset augmentation
+inputSize = net.Layers(1).InputSize;
 augimdsTrain = augmentedImageDatastore(inputSize(1:2),train);
 augimdsTest = augmentedImageDatastore(inputSize(1:2),test);
 
-layer = 'bn'; %% Scegli a che layer deve fermarsi la rete, mi fermo al 4o dense block
-
+%%Scelgo che layer deve fermarsi la rete, mi fermo al 4o dense block prima
+%%dell'ultimo layer convolutivo in modo da estrarre le features, usando una
+%%rete pretrained ho una particolare efficenza a livello computazionale in
+%%quanto estraggo le features scorrendo una sola volta i dati di input
+%%richiedendo le attivazioni del layer con la funzione activations
+layer = 'bn'; 
 featuresTrain = activations(net,augimdsTrain,layer,'OutputAs','rows');
 featuresTest = activations(net,augimdsTest,layer,'OutputAs','rows');
 
-%Creazione classificatori
+%Creazione classificatori knn, ctree e utilizzo l' ensemble learning
 knn = fitcknn(featuresTrain, train.Labels);
 ctree = fitctree(featuresTrain, train.Labels);
 ens = fitcensemble(featuresTrain,train.Labels,'Method','LPBoost','NumLearningCycles',50,'Learners','tree');
@@ -30,7 +36,7 @@ performance_test_knn = confmat(test.Labels, predicted_test_knn);
 predicted_test_ctree = predict(ctree, featuresTest);
 performance_test_ctree = confmat(test.Labels, predicted_test_ctree);
 
-%Classificazione ensemble
+%Classificazione con ensemble learning 
 predicted_test_ens = predict(ens, featuresTest);
 performance_test_ens = confmat(test.Labels, predicted_test_ens);
 
