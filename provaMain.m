@@ -1,6 +1,7 @@
 clearvars;
+close all;
 
-imgPath = "images/chocolate/303wy.png";
+imgPath = "images/biscuits/thqsx.png";
 
 %lettura immagine  
 imgRGB = im2double(imread(imgPath));
@@ -13,12 +14,18 @@ imgSharp = (imgG - imgGauss) + imgG;
 %calcolo edge
 edgeImg = edge(imgSharp,'canny');
 p = stdfilt(imgSharp);
-%p = imbinarize(p);
+p = imgaussfilt(imgG, 4);
+%p = p - 0.06;
+%p = imbinarize(p, 'adaptive');
 %p = edge(p, 'canny');
 %p = imdilate(p, strel('disk',10));
 %p = imfill(p, 'holes');
-figure
-imshow(p);
+%p = imerode(p, strel('disk', 25));
+%p = imdilate(p, strel('disk',20));
+labels = reshape(labels, out.nt_rows, out.nt_cols);
+
+figure, 
+imagesc(labels),axis image,colorbar,title("labels"),
 
 %close and fill edges
 dilatedEdges = imdilate(edgeImg, strel('disk',10));
