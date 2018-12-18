@@ -2,8 +2,9 @@ close all;
 clearvars;
 
 %%Inizializzo un data store e creo la partizione di test
-imds = imageDatastore('images','IncludeSubfolders',true,'LabelSource','foldernames');
-[train,test] = splitEachLabel(imds,0.7,'randomized');
+imdstr = imageDatastore('contrasted','IncludeSubfolders',true,'LabelSource','foldernames');
+[train, test] = splitEachLabel(imdstr,0.7,'randomized');
+
 
 %Inizializzo densenet201
 net = densenet201;
