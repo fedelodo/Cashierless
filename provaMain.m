@@ -1,26 +1,35 @@
 clearvars;
 
-imds = imageDatastore('images','IncludeSubfolders',true,'LabelSource','foldernames');
-imgs = imds.Files;
+imgPath = "images/chocolate/an34u.png";
 
-for i = 1:numel(imgs)
-    out = gaborPreprocessing(imgs{i});
-    imwrite(out,strrep(imgs{i}, "images", "gabored"));
-end
+imgRGB = im2double(imread(imgPath));
 
-%{
+%p = stdfilt(imgRGB);
+
+gaussImg = imgaussfilt(imgRGB,10);
+
+edgeR = edge(gaussImg(:,:,1),'canny');
+edgeG = edge(gaussImg(:,:,2),'canny');
+edgeB = edge(gaussImg(:,:,3),'canny');
+edgeImg = edgeR | edgeG | edgeB;
+figure(1),
+imshow(edgeImg);
 
 %close and fill edges
-dilatedEdges = imdilate(edgeImg, strel('disk',10));
+dilatedEdges = imdilate(edgeImg, strel('disk',5));
 filledEdges = imfill(dilatedEdges, 'holes');
 
+figure,imshow(filledEdges);
+
 %eliminazione bordi spuri
-mask = imerode(filledEdges,strel('disk',30));
-mask = imdilate(mask, strel('disk',30));
+mask = imerode(filledEdges,strel('disk',20));
+mask = imdilate(mask, strel('disk',20));
 
 final = imgRGB .* mask;
-  
 
+figure(2),
+imshow(final);
+%{
 figure(1),
 subplot(1,3,1), imshow(imgG),
 subplot(1,3,2), imshow(imgGauss),
