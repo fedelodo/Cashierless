@@ -1,5 +1,5 @@
 close all;
-clearvars;
+
 
 %%Inizializzo un data store e creo la partizione di test
 imdstr = imageDatastore('contrasted','IncludeSubfolders',true,'LabelSource','foldernames');
@@ -7,11 +7,10 @@ imdstr = imageDatastore('contrasted','IncludeSubfolders',true,'LabelSource','fol
 
 
 %Inizializzo densenet201
-net = densenet201;
 
 %%Ridimensiono le immagini in modo che siano compatibili con l'input di
 %%densenet e faccio una dataset augmentation
-inputSize = net.Layers(1).InputSize;
+inputSize = netTransfer.Layers(1).InputSize;
 augimdsTrain = augmentedImageDatastore(inputSize(1:2),train);
 augimdsTest = augmentedImageDatastore(inputSize(1:2),test);
 
@@ -20,9 +19,9 @@ augimdsTest = augmentedImageDatastore(inputSize(1:2),test);
 %%rete pretrained ho una particolare efficenza a livello computazionale in
 %%quanto estraggo le features scorrendo una sola volta i dati di input
 %%richiedendo le attivazioni del layer con la funzione activations
-layer = 'bn'; 
-featuresTrain = activations(net,augimdsTrain,layer,'OutputAs','rows');
-featuresTest = activations(net,augimdsTest,layer,'OutputAs','rows');
+layer = 'fc'; 
+featuresTrain = activations(netTransfer,augimdsTrain,layer,'OutputAs','rows');
+featuresTest = activations(netTransfer,augimdsTest,layer,'OutputAs','rows');
 
 %Creazione classificatori knn, ctree e utilizzo l' ensemble learning
 knn = fitcknn(featuresTrain, train.Labels);

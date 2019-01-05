@@ -1,23 +1,58 @@
 close all;
-clearvars;
+
+%%inizializzo un pool di risorse per il calcolo parallelo
+pool = parpool;
 
 %%Inizializzo un data store e creo la partizione di test
-imdstr = imageDatastore('contrasted','IncludeSubfolders',true,'LabelSource','foldernames');
+imds = imageDatastore('contrasted','IncludeSubfolders',true,'LabelSource','foldernames');
+[imdsTrain,imdsValidation] = splitEachLabel(imds,0.7,'randomized');
 
-
-%Inizializzo densenet201
-net = densenet201;
+%Inizializzo alexnet
+net = alexnet;
 
 %%Ridimensiono le immagini in modo che siano compatibili con l'input di
 %%densenet e faccio una dataset augmentation
 inputSize = net.Layers(1).InputSize;
-augimds = augmentedImageDatastore(inputSize(1:2),imdstr);
+imageAugmenter = imageDataAugmenter('RandRotation',[-20,20], ...
+                                    'RandXTranslation',[-3 3], ...
+                                    'RandYTranslation',[-3 3], ...
+                                    'RandScale', [1 3], ...
+                                    'RandXReflection', true, ...
+                                    'RandYReflection', true, ...
+                                    'RandXShear', [-3 3], ...
+                                    'RandYShear', [-3 3]);
+                                
+augimds = augmentedImageDatastore(inputSize(1:2),imdsTrain,'DataAugmentation',imageAugmenter);
+augimdsValidation = augmentedImageDatastore(inputSize(1:2),imdsValidation);
 
-%%Scelgo che layer deve fermarsi la rete, mi fermo al 4o dense block prima
-%%dell'ultimo layer convolutivo in modo da estrarre le features, usando una
-%%rete pretrained ho una particolare efficenza a livello computazionale in
-%%quanto estraggo le features scorrendo una sola volta i dati di input
-%%richiedendo le attivazioni del layer con la funzione activations
-layer = 'avg_pool'; 
-features = activations(net, augimds,layer,'OutputAs','rows');
-T = table(features, imdstr.Labels);
+%%Faccio il fitting di alexnet rimuovendo gli ultimi 3 layer e portando da
+%%1000 a 13 le classi da riconocere
+layersTransfer = net.Layers(1:end-4);
+numClasses = numel(categories(imdsTrain.Labels));
+
+layers = [
+    layersTransfer
+    dropoutLayer(0.6);
+    fullyConnectedLayer(numClasses,'WeightLearnRateFactor',15,'BiasLearnRateFactor',10)
+    softmaxLayer
+    classificationLayer];
+
+%Imposto le varie opzioni di training
+
+options = trainingOptions('sgdm', ...
+    'MiniBatchSize',32, ...
+    'MaxEpochs',100, ...
+    'LearnRateSchedule','piecewise', ...
+    'InitialLearnRate',1e-2, ...
+    'Shuffle','every-epoch', ...
+    'ValidationData',augimdsValidation, ...
+    'ValidationFrequency',3, ...
+    'Verbose',false, ...
+    'Plots','training-progress', ...
+    'ExecutionEnvironment','parallel');
+
+%Faccio il training della rete
+netTransfer = trainNetwork(augimds,layers,options);
+
+%Elimino il pool di risorse
+delete(gcp('nocreate'));
