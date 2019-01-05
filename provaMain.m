@@ -1,12 +1,12 @@
 clearvars;
 
-imgPath = "images/chocolate/an34u.png";
+imgPath = "images/beer/WhatsApp Image 2018-12-16 at 21.56.08 (1).jpeg";
 
 imgRGB = im2double(imread(imgPath));
 
-%p = stdfilt(imgRGB);
+p = stdfilt(imgRGB);
 
-gaussImg = imgaussfilt(imgRGB,10);
+gaussImg = imgaussfilt(imgRGB,5);
 
 edgeR = edge(gaussImg(:,:,1),'canny');
 edgeG = edge(gaussImg(:,:,2),'canny');
@@ -19,15 +19,16 @@ imshow(edgeImg);
 dilatedEdges = imdilate(edgeImg, strel('disk',5));
 filledEdges = imfill(dilatedEdges, 'holes');
 
-figure,imshow(filledEdges);
+figure(2),
+imshow(dilatedEdges);
 
 %eliminazione bordi spuri
-mask = imerode(filledEdges,strel('disk',20));
-mask = imdilate(mask, strel('disk',20));
+mask = imerode(filledEdges,strel('disk',30));
+mask = imdilate(mask, strel('disk',30));
 
 final = imgRGB .* mask;
 
-figure(2),
+figure(3),
 imshow(final);
 %{
 figure(1),
