@@ -3,13 +3,14 @@ function final = provaPreprocessing2(imgPath)
     imgRGB = im2double(imread(imgPath));
 
     %unsharp masking
-    gaussImg = imgaussfilt(imgRGB,5);
+    gaussImg = imgaussfilt(imgRGB,7);
+    n = 10;
 
     %calcolo edge
-    edgeR = edge(gaussImg(:,:,1),'canny');
-    edgeG = edge(gaussImg(:,:,2),'canny');
-    edgeB = edge(gaussImg(:,:,3),'canny');
-    edgeImg = edgeR | edgeG | edgeB;
+    edgeR = edge(medfilt2(gaussImg(:,:,1), [n n]),'canny');
+    edgeG = edge(medfilt2(gaussImg(:,:,2), [n n]),'canny');
+    edgeB = edge(medfilt2(gaussImg(:,:,3), [n n]),'canny');
+    edgeImg = edgeR | edgeG | edgeB ;
     
     %close and fill edges
     dilatedEdges = imdilate(edgeImg, strel('disk',5));

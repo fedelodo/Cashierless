@@ -4,7 +4,8 @@ imds = imageDatastore('images','IncludeSubfolders',true,'LabelSource','foldernam
 imgs = imds.Files;
 
 for i = 1:numel(imgs)
+    
     out = provaPreprocessing2(imgs{i});
-    imwrite(out,strrep(imgs{i}, "images", "contrasted"));
+    imwrite(out,strrep(imgs{i}, "images", "contrasted2"));
 end
     

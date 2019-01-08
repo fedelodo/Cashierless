@@ -1,17 +1,25 @@
 clearvars;
+close all;
 
-imgPath = "images/beer/WhatsApp Image 2018-12-16 at 21.56.08 (1).jpeg";
+imgPath = "images/biscuits/w4vsw.png";
 
 imgRGB = im2double(imread(imgPath));
 
-p = stdfilt(imgRGB);
+figure(4)
+imshow(imgRGB);
 
-gaussImg = imgaussfilt(imgRGB,5);
+gaussImg = imgaussfilt(imgRGB,7);
 
-edgeR = edge(gaussImg(:,:,1),'canny');
-edgeG = edge(gaussImg(:,:,2),'canny');
-edgeB = edge(gaussImg(:,:,3),'canny');
-edgeImg = edgeR | edgeG | edgeB;
+
+figure(6)
+imshow(gaussImg);
+
+n = 10;
+
+edgeR = edge(medfilt2(gaussImg(:,:,1), [n n]),'canny');
+edgeG = edge(medfilt2(gaussImg(:,:,2), [n n]),'canny');
+edgeB = edge(medfilt2(gaussImg(:,:,3), [n n]),'canny');
+edgeImg = edgeR | edgeG | edgeB ;
 figure(1),
 imshow(edgeImg);
 
