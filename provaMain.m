@@ -1,20 +1,13 @@
-clearvars;
+clear all;
 close all;
 
-imgPath = "images/biscuits/w4vsw.png";
+imgPath = "images/biscuits/uityr.jpg";
 
 imgRGB = im2double(imread(imgPath));
 
-figure(4)
-imshow(imgRGB);
+gaussImg = imgaussfilt(imgRGB,9);
 
-gaussImg = imgaussfilt(imgRGB,7);
-
-
-figure(6)
-imshow(gaussImg);
-
-n = 10;
+n = 2;
 
 edgeR = edge(medfilt2(gaussImg(:,:,1), [n n]),'canny');
 edgeG = edge(medfilt2(gaussImg(:,:,2), [n n]),'canny');
@@ -28,7 +21,7 @@ dilatedEdges = imdilate(edgeImg, strel('disk',5));
 filledEdges = imfill(dilatedEdges, 'holes');
 
 figure(2),
-imshow(dilatedEdges);
+imshow(filledEdges);
 
 %eliminazione bordi spuri
 mask = imerode(filledEdges,strel('disk',30));
@@ -38,7 +31,22 @@ final = imgRGB .* mask;
 
 figure(3),
 imshow(final);
+
 %{
+p = imgRGB;
+%p = imgaussfilt(imgRGB,2);
+p = stdfilt(p,true(87)).^0.3;
+bw = imbinarize(rgb2gray(p));
+
+figure(7),
+imshow(p);
+
+figure(8),
+imshow(bw.*imgRGB);
+
+
+---
+
 figure(1),
 subplot(1,3,1), imshow(imgG),
 subplot(1,3,2), imshow(imgGauss),
@@ -51,4 +59,5 @@ subplot(1,3,3), imshow(mask);
 
 figure(3),
 subplot(1,2,1), imshow(final);
+
 %}
