@@ -6,6 +6,6 @@ imgs = imds.Files;
 for i = 1:numel(imgs)
     
     out = provaPreprocessing2(imgs{i});
-    imwrite(out,strrep(imgs{i}, "images", "contrasted2"));
+    imwrite(out,strrep(imgs{i}, "images", "contrasted"));
 end
     
