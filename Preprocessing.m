@@ -3,7 +3,7 @@ function final = Preprocessing(imgPath)
     imgRGB = im2double(imread(imgPath));
 
     %riscala immagine
-    imgRGB = imresize(imgRGB, [300 300]);
+    %imgRGB = imresize(imgRGB, [300 300]);
     
     %unsharp masking
     gaussImg = imgaussfilt(imgRGB,7);
