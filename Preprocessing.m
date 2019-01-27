@@ -3,11 +3,10 @@ function final = Preprocessing(imgPath)
     imgRGB = im2double(imread(imgPath));
 
     %riscala immagine
-    %imgRGB = imresize(imgRGB, [300 300]);
+    imgRGB = imresize(imgRGB, [300 300]);
     
     %unsharp masking
-    gaussImg = imgaussfilt(imgRGB,7);
-    n = 10;
+    gaussImg = imgaussfilt(imgRGB,5);
 
     %calcolo edge
     edgeR = edge(gaussImg(:,:,1),'canny');
@@ -24,4 +23,5 @@ function final = Preprocessing(imgPath)
     mask = imdilate(mask, strel('disk',20));
     
     final = imgRGB .* mask;
+    
 end

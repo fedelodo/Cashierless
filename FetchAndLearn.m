@@ -9,7 +9,7 @@ net = alexnet;
 
 %%Ridimensiono le immagini in modo che siano compatibili con l'input di
 %%densenet e faccio una dataset augmentation
-inputSize = net.Layers(1).InputSize;
+inputSize = netTransfer.Layers(1).InputSize;
 augimds = augmentedImageDatastore(inputSize(1:2),imdstr);
 
 
@@ -19,4 +19,6 @@ augimds = augmentedImageDatastore(inputSize(1:2),imdstr);
 %%quanto estraggo le features scorrendo una sola volta i dati di input
 %%richiedendo le attivazioni del layer con la funzione activations
 layer = 24; 
-features = activations(net,augimds,layer,'OutputAs','rows');
+features = activations(netTransfer,augimds,layer,'OutputAs','rows');
+
+Tab = table(features, imds.Labels);

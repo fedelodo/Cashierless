@@ -1,10 +1,25 @@
 clearvars;
 close all;
 
-imgPath = '/home/dige/Scrivania/immagini nuove dataset/birra2.jpg';
-netFile = '/home/dige/Scrivania/fittedAlexNet70%acc0.7%loss.mat';
-modelFile = '/home/dige/Scrivania/mediumTree81%.mat';
+%{
+TEST MAIN
+%}
+
+imgPath = 'birra1.jpg';
+netFile = 'alex72.mat';
+modelFile = 'cubicknn767.mat';
 T = 0.50;
 
-[label, score] = classifyMyDick(imgPath,T,netFile,modelFile);
+[label, score] = ClassifyImage(imgPath,T,netFile,modelFile);
 
+
+%{
+TEST PREPROCESSING 
+
+imgPath = 'images/biscuits/w4vsw.png';
+
+out = Preprocessing(imgPath);
+
+imshow(out);
+
+%}

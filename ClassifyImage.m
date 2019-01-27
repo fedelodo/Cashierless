@@ -1,5 +1,5 @@
 
-function [label,score] = classifyMyDick(imgPath,threshold,netFilePath,modelFilePath)
+function [label,score] = ClassifyImage(imgPath,threshold,netFilePath,modelFilePath)
     % preprocessing
     out = Preprocessing(imgPath);
     
@@ -22,8 +22,8 @@ function [label,score] = classifyMyDick(imgPath,threshold,netFilePath,modelFileP
     
     % inizializzo il classificatore e lo utilizzo per classificare l'img
     Var1 = 0;
-    Var2 = featuresimg;
-    T1 = table(Var1, Var2);
+    features = featuresimg;
+    T1 = table(Var1, features);
     [label, score] = trainedModel.predictFcn(T1);
    
     % soglio con una soglia preimpostata per decidere se l'oggetto è
@@ -35,7 +35,9 @@ function [label,score] = classifyMyDick(imgPath,threshold,netFilePath,modelFileP
     
     % genero il titolo nella forma "prodotto@percentuale di confidenza" e
     % disegno la boundingbox sull' immagine originale
-    figure, imshow(imgPath);
+    image = imread(imgPath);
+    image = imresize(image, [300 300]);
+    figure, imshow(image);
     title = strcat(char(label(1)),'@',int2str(max(score)*100),' %');
     hold on;
     rectangle('Position', x,  ...
