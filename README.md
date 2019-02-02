@@ -19,10 +19,10 @@ The objective is to describe supermarket items from a camera view and make a Che
 ## How to classify an image
 
 Run ClassifyImage function, the arguments are:
-    * Path to the image that you want to classify
-    * A threshold to eliminate false positives 
-    * Path to the classifier .mat
-    * Path to the network .mat (optional, defaults to CNN.mat)
+- Path to the image that you want to classify
+- A threshold to eliminate false positives 
+- Path to the classifier .mat
+- Path to the network .mat (optional, defaults to CNN.mat)
 
 The function displays the image and outputs the predicted label and score.
 
