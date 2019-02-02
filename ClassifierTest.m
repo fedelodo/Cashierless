@@ -8,7 +8,7 @@ imds = imageDatastore('contrasted','IncludeSubfolders',true,'LabelSource','folde
 [imdsTrain,imdsValidation] = splitEachLabel(imds,0.7,'randomized');
 
 %Inizializzo alexnet
-net = googlenet;
+net = alexnet;
 
 %%Ridimensiono le immagini in modo che siano compatibili con l'input di
 %%densenet e faccio una dataset augmentation
@@ -53,11 +53,14 @@ elseif isa(learnableLayer,'nnet.cnn.layer.Convolution2DLayer')
         'BiasLearnRateFactor',10);
  end
  
+newClassLayer = classificationLayer('Name','new_classoutput');
+ 
 lgraph = replaceLayer(lgraph,learnableLayer.Name,newLearnableLayer);
 
 lgraph = replaceLayer(lgraph,classLayer.Name,newClassLayer);
 
 %mantieni le connessioni e freeza i pesi dei primi layer
+layers = lgraph.Layers;
 connections = lgraph.Connections;
 
 layers(1:10) = freezeWeights(layers(1:10));
