@@ -16,9 +16,8 @@ function [label,score] = ClassifyImage(imgPath,threshold,netFilePath,modelFilePa
     % faccio il calcolo delle features dell' immagine con la rete
    
     inputSize = netTransfer.Layers(1).InputSize;
-    augimg = augmentedImageDatastore(inputSize(1:2),out);
-    layer = 24; 
-    featuresimg = activations(netTransfer,augimg,layer,'OutputAs','rows');
+    out = imresize(out,inputSize(1:2));    layer = 24; 
+    featuresimg = activations(netTransfer,out,layer,'OutputAs','rows');
     
     % inizializzo il classificatore e lo utilizzo per classificare l'img
     Var1 = 0;

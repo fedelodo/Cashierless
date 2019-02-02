@@ -25,43 +25,17 @@ imageAugmenter = imageDataAugmenter('RandRotation',[-20,20], ...
 augimds = augmentedImageDatastore(inputSize(1:2), imdsTrain,'DataAugmentation',imageAugmenter);
 augimdsValidation = augmentedImageDatastore(inputSize(1:2), imdsValidation,'DataAugmentation',imageAugmenter);
 
-%%Faccio il fitting della rete portando il numero di classi da riconoscere
-%%da 1000 a 10
+%%Faccio il fitting di alexnet rimuovendo gli ultimi 3 layer e portando da
+%%1000 a 13 le classi da riconocere
+layersTransfer = net.Layers(1:end-4);
 numClasses = numel(categories(imdsTrain.Labels));
 
-
-%estraggo il grafo dei layer
-if isa(net,'SeriesNetwork') 
-  lgraph = layerGraph(net.Layers); 
-else
-  lgraph = layerGraph(net);
-end 
-
-%cerco i layer da modificare
- [learnableLayer,classLayer] = findLayersToReplace(lgraph);
- 
- if isa(learnableLayer,'nnet.cnn.layer.FullyConnectedLayer')
-    newLearnableLayer = fullyConnectedLayer(numClasses, ...
-        'Name','new_fc', ...
-        'WeightLearnRateFactor',15, ...
-        'BiasLearnRateFactor',10);
-    
-elseif isa(learnableLayer,'nnet.cnn.layer.Convolution2DLayer')
-    newLearnableLayer = convolution2dLayer(1,numClasses, ...
-        'Name','new_conv', ...
-        'WeightLearnRateFactor',15, ...
-        'BiasLearnRateFactor',10);
- end
- 
-lgraph = replaceLayer(lgraph,learnableLayer.Name,newLearnableLayer);
-
-lgraph = replaceLayer(lgraph,classLayer.Name,newClassLayer);
-
-%mantieni le connessioni e freeza i pesi dei primi layer
-connections = lgraph.Connections;
-
-layers(1:10) = freezeWeights(layers(1:10));
-lgraph = createLgraphUsingConnections(layers,connections);
+layers = [
+    layersTransfer
+    dropoutLayer(0.7);
+    fullyConnectedLayer(numClasses,'WeightLearnRateFactor',15,'BiasLearnRateFactor',10)
+    softmaxLayer
+    classificationLayer];
 
 %Imposto le varie opzioni di training
 
@@ -77,3 +51,7 @@ options = trainingOptions('sgdm', ...
 
 %Faccio il training della rete
 netTransfer = trainNetwork(augimds,layers,options);
+
+edit(fullfile(matlabroot,'examples','nnet','main','createLgraphUsingConnections.m'))
+%Elimino il pool di risorse
+%delete(gcp('nocreate'));
