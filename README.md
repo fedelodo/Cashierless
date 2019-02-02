@@ -16,7 +16,7 @@ The objective is to describe supermarket items from a camera view and make a Che
     input, choose the most accurate classifier model and export it into a .mat
     file
 
-##How to classify an image
+## How to classify an image
 
 Run ClassifyImage function, the arguments are:
     * Path to the image that you want to classify
