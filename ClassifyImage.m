@@ -15,19 +15,20 @@ function [label,score] = ClassifyImage(imgPath,threshold,modelFilePath,netFilePa
     out = im2uint8(out);
     
     % carico la rete e il classificatore per estrarre le features
-    load(netFilePath, 'netTransfer');
-    load(modelFilePath, 'trainedModel');
+    load(netFilePath);
+    load(modelFilePath);
     
     % faccio il calcolo delle features dell' immagine con la rete
    
     inputSize = netTransfer.Layers(1).InputSize;
-    out = imresize(out,inputSize(1:2));    layer = 24; 
+    out = imresize(out,inputSize(1:2));     
     featuresimg = activations(netTransfer,out,layer,'OutputAs','rows');
     
     % inizializzo il classificatore e lo utilizzo per classificare l'img
     Var1 = 0;
     Var2 = featuresimg;
-    T1 = table(Var1, Var2);
+    VarNames = {'Var1',trainedModel.RequiredVariables{1,1}};
+    T1 = table(Var1, Var2, 'VariableNames', VarNames);
     [label, score] = trainedModel.predictFcn(T1);
    
     % soglio con una soglia preimpostata per decidere se l'oggetto è

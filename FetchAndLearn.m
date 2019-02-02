@@ -21,5 +21,7 @@ augimds = augmentedImageDatastore(inputSize(1:2),imdstr);
 %%richiedendo le attivazioni del layer con la funzione activations
 features = activations(netTransfer,augimds,layer,'OutputAs','rows');
 
+save(netFilePath, 'netTransfer', 'layer');
+
 Tab = table(features, imdstr.Labels);
 end

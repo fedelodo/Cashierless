@@ -10,11 +10,11 @@ The objective is to describe supermarket items from a camera view and make a Che
     called CNN.mat
 4. Run the function FetchAndLearn, the arguments are:
     * the filepath of the network model (optional, defaults to CNN.mat)
-    * the layer where you want to extract the features
+    * the layer where you want to extract the features (24th layer with alexnet suggested)
     the function returns a table with labels from the imgs and features
 5. Run Classification Learner App, use the table frome the previous step as
     input, choose the most accurate classifier model and export it into a .mat
-    file
+    file. Save the model as 'trainedModel'.
 
 ## How to classify an image
 
