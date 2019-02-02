@@ -19,8 +19,7 @@ function final = Preprocessing(imgPath)
     filledEdges = imfill(dilatedEdges, 'holes');
 
     %eliminazione bordi spuri
-    mask = imerode(filledEdges,strel('disk',20));
-    mask = imdilate(mask, strel('disk',20));
+    mask = imopen(filledEdges,strel('disk',20));
     
     final = imgRGB .* mask;
     

@@ -61,16 +61,32 @@ Abbiamo raccolto immagini con 3 diverse modalità:
 
   La fase di preprocessing permette di segmentare ragionevolmente l'area degli
   oggetti presenti nell'immagine, in modo da ridurre il più possibile le
-  informazioni spurie dello sfondo e facilitare l'estrazione di
-  feature rilevanti da parte della CNN.
+  informazioni spurie dello sfondo e facilitare l'estrazione di feature rilevanti da 
+  parte della CNN.
+  La politica di segmentazione prevede la presenza di eventuali porzioni 
+  di sfondo perchè è preferibile avere un piccolo eccesso di sfondo che perdere 
+  potenziali parti degli oggetti (in seguito a erosioni) da cui si possono estrarre 
+  feature rilevanti mediante CNN.
+  
 
   La fase di preprocessing è divisa in diverse sottofasi:
   1. Scaling dell'immagine
+	* Permette di passare alla CNN immagini della stessa dimensione e di 
+	applicare gli stessi operatori morfologici
   2. Smoothing gaussiano
+	* Permette di ridurre il rumore nell'immagine per evidenziare i contorni
+	e facilitare il calcolo degli edge rilevanti riducendo quelli spuri
   3. Calcolo degli edge sui 3 canali RGB
+	* Permette di rilevare gli edge sui tre canali colore per ottenere contorni
+	più solidi rispetto a quelli dell'immagine a livelli di grigio
   4. Unione dei 3 edge calcolati
+	* Unisco gli edge appena trovati sui canali colore in una unica edge image
   5. Dilatazione/chiusura degli edge e fill dei buchi
+	* Tramite la dilatazione collego i contorni che potrebbero non essere 
+	ancora completi ed eseguo un fill dei contorni chiusi
   6. Apertura degli edge per rimuovere eventuali bordi spuri
+	* Una volta riempite le aree dei contorni eseguo una open (fill+dilate)
+	per rimuovere bordi e forme spurie create dalle fasi precedenti
 
 ### Estrazione features (CNN)
 
@@ -108,6 +124,8 @@ E' stato scelto di utilizzare KNN in quanto permette una classificazione robusta
 ## Prestazioni e comparison
 
 ### Scelte preprocessing
+Ecco alcune delle varie strategie contemplate per il preprocessing:
+ * Utilizzo di altri  
 
 ### Prestazioni  vari modelli di rete
 
