@@ -102,8 +102,8 @@ E' stato scelto di utilizzare KNN in quanto permette una classificazione robusta
 ### Sample
 
 | Input                                          | Preprocessing                                            | Output                                        |
-|------------------------------------------------|----------------------------------------------------------|-----------------------------------------------|
-| ![Immagine Input](./presentation/original.png) | ![Immagine preprocessing](./presentation/contrasted.png) | ![Immagine Output](./presentation/output.JPG) |
+| ---------------------------------------------- | -------------------------------------------------------- | --------------------------------------------- |
+| ![Immagine Input](./presentation/original.png) | ![Immagine preprocessing](./presentation/contrasted.png) | ![Immagine Output](./presentation/output.png) |
 
 ## Prestazioni e comparison
 
