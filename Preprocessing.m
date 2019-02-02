@@ -5,7 +5,7 @@ function final = Preprocessing(imgPath)
     %riscala immagine
     imgRGB = imresize(imgRGB, [300 300]);
     
-    %unsharp masking
+    %smoothing gaussiano
     gaussImg = imgaussfilt(imgRGB,5);
 
     %calcolo edge

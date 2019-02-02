@@ -71,21 +71,22 @@ Abbiamo raccolto immagini con 3 diverse modalità:
 
   La fase di preprocessing è divisa in diverse sottofasi:
   1. Scaling dell'immagine
-	* Permette di passare alla CNN immagini della stessa dimensione e di 
+      * Permette di passare alla CNN immagini della stessa dimensione e di 
 	applicare gli stessi operatori morfologici
   2. Smoothing gaussiano
-	* Permette di ridurre il rumore nell'immagine per evidenziare i contorni
+      * Permette di ridurre il rumore nell'immagine per evidenziare i contorni
 	e facilitare il calcolo degli edge rilevanti riducendo quelli spuri
   3. Calcolo degli edge sui 3 canali RGB
-	* Permette di rilevare gli edge sui tre canali colore per ottenere contorni
-	più solidi rispetto a quelli dell'immagine a livelli di grigio
+      * Sfrutta l'algoritmo di Canny per rilevare gli edge
+      sui tre canali colore per ottenere contorni più solidi rispetto a quelli 
+      dell'immagine a livelli di grigio
   4. Unione dei 3 edge calcolati
-	* Unisco gli edge appena trovati sui canali colore in una unica edge image
+      * Unisco gli edge appena trovati sui canali colore in una unica edge image
   5. Dilatazione/chiusura degli edge e fill dei buchi
-	* Tramite la dilatazione collego i contorni che potrebbero non essere 
+      * Tramite la dilatazione collego i contorni che potrebbero non essere 
 	ancora completi ed eseguo un fill dei contorni chiusi
   6. Apertura degli edge per rimuovere eventuali bordi spuri
-	* Una volta riempite le aree dei contorni eseguo una open (fill+dilate)
+      * Una volta riempite le aree dei contorni eseguo una open (fill+dilate)
 	per rimuovere bordi e forme spurie create dalle fasi precedenti
 
 ### Estrazione features (CNN)
@@ -124,10 +125,36 @@ E' stato scelto di utilizzare KNN in quanto permette una classificazione robusta
 ## Prestazioni e comparison
 
 ### Scelte preprocessing
-Ecco alcune delle varie strategie contemplate per il preprocessing:
- * Utilizzo di altri  
+Ecco alcune delle varie strategie contemplate per il preprocessing: 
 
-### Prestazioni  vari modelli di rete
+***Utilizzo di altri spazi colore***
+
+Sono stati testati gli spazi HSV e YCbCr 
+* Per l'HSV è stata testata la tinta per individuare meglio zone di colore diverso
+	e segmentare conseguentemente
+* Per l'YCbCr sono stati testati i canali di crominanza per lo stesso motivo
+
+***Utilizzo di altri algoritmi di edge detection***
+
+Sono stati testati diversi metodi di edge detection fra cui Sobel, Prewitt, LoG (Laplacian of Gaussian) 
+e Canny. 
+
+I primi due metodi tendevano a non trovare alcuni edges in corrispondenza di colori simili vicini fra loro,
+impossibilitando di fatto la close e la fill degli edges. Fra il LoG e Canny (quest'ultimo combinato con 
+lo smoothing gaussiano) è stato scelto il Canny perchè ha avuto performance di edge detection migliori.
+
+***Scelta degli operatori morfologici***
+
+Sono state testate diverse dimensioni e forme di elementi strutturanti, fra cui 
+* linee orientate orizzontalmente,verticalmente e obliquamente
+* quadrati
+* dischi
+
+I dischi sono stati gli elementi strutturanti che hanno unito i contorni meglio secondo la politica
+di segmentazione accennata in precedenza. 
+
+
+### Prestazioni vari modelli di rete
 
 #### Googlenet vs Alexnet
 
