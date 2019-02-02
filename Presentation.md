@@ -1,4 +1,9 @@
+*La presentazione verrà eseguita con reveal.js motivo per cui viene allegato il testo della presentazione in formato markdown*
+
+
+
 # Presentazione
+
 Federico Lodovici 816040
 Luca Di Gennaro 820612
 
@@ -72,7 +77,7 @@ Abbiamo raccolto immagini con 3 diverse modalità:
   di sfondo perchè è preferibile avere un piccolo eccesso di sfondo che perdere 
   potenziali parti degli oggetti (in seguito a erosioni) da cui si possono estrarre 
   feature rilevanti mediante CNN.
-  
+
 
   La fase di preprocessing è divisa in diverse sottofasi:
   1. Scaling dell'immagine
