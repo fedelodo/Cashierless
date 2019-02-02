@@ -80,3 +80,5 @@ options = trainingOptions('sgdm', ...
 
 %Faccio il training della rete
 netTransfer = trainNetwork(augimds,layers,options);
+
+save('CNN.mat', netTransfer);

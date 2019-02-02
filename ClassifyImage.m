@@ -1,6 +1,11 @@
 
-function [label,score] = ClassifyImage(imgPath,threshold,netFilePath,modelFilePath)
-    % preprocessing
+function [label,score] = ClassifyImage(imgPath,threshold,modelFilePath,netFilePath)
+    
+    if (~exist('netFilePath', 'var'))
+        netFilePath = 'CNN.mat';
+    end
+    
+% preprocessing
     out = Preprocessing(imgPath);
     
     % calcolo etichette componenti connesse per generare la boundingbox

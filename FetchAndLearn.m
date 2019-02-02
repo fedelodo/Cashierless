@@ -1,4 +1,9 @@
 function [Tab] = FetchAndLearn(netFilePath,layer)
+
+    if (~exist('netFilePath', 'var'))
+        netFilePath = 'CNN.mat';
+    end
+    
 %%Inizializzo un data store e creo la partizione di test
 imdstr = imageDatastore('contrasted','IncludeSubfolders',true,'LabelSource','foldernames');
 
