@@ -25,7 +25,7 @@ Le classi di oggetti che abbiamo deciso di riconoscere sono:
 
 ### Pipeline
 
-![Pipeline](./pipelineh.jpeg)
+![Pipeline](./presentation/pipelineh.jpeg)
 
 ### Vantaggi
 
@@ -90,18 +90,20 @@ features vengono estratte dall' ultimo layer prima dei livelli di classificazion
 
 ### Classificazione
 
-Si è utilizzato un classificatore del tipo X.
+Si è utilizzato un classificatore del tipo Ensemble KNN.
 
-A X vengono dati in input le features estratte dall' immagine con la CNN.
+Al classificatore vengono dati in input le features estratte dall' immagine con la CNN.
 
-Funzionamento X.
+Si è utilizza la tecnica della combinazione di più classificatori KNN per migliorare l'accuratezza.
+
+E' stato scelto di utilizzare KNN in quanto permette una classificazione robusta e in tempi rapidi.
 
 
 ### Sample
 
-| Input                       | Preprocessing                       | Output                       |
-|-----------------------------|-------------------------------------|------------------------------|
-| ![Immagine Input](./1.jpeg) | ![Immagine preprocessing](./2.jpeg) | ![Immagine Output](./1.jpeg) |
+| Input                                          | Preprocessing                                            | Output                                        |
+|------------------------------------------------|----------------------------------------------------------|-----------------------------------------------|
+| ![Immagine Input](./presentation/original.png) | ![Immagine preprocessing](./presentation/contrasted.png) | ![Immagine Output](./presentation/output.JPG) |
 
 ## Prestazioni e comparison
 
@@ -115,11 +117,11 @@ E' stata monitorata in particolare la funzione di loss durante il training delle
 
 ###### Alexnet:
 
-![Immagine Grafico alexnet](/home/federico/git/Cashierless/alexnet.JPG)
+![Immagine Grafico alexnet](./presentation/alexnet.JPG)
 
 ###### Googlenet:
 
-![Immagine Grafico googlenet](googlenet.JPG)
+![Immagine Grafico googlenet](./presentation/googlenet.JPG)
 
 Non si notano grandi differenze nella loss delle due reti.
 
@@ -127,11 +129,11 @@ Non si notano grandi differenze nella loss delle due reti.
 
 Le prestazioni dei vari classificatori sono state monitorate utilizzando una confusion matrix, nella tabella successiva si riportano i vari classificatori con l' accuracy e la rispettiva confusion matrix
 
-| SVM 77%                                       | Tree 65%                                                     |
-| --------------------------------------------- | ------------------------------------------------------------ |
-| ![Immagine Grafico SVM](./SVM77%.JPG)         | ![Immagine Grafico SVM](./Mediumtree65%.JPG)                 |
-| **KNN 76%**                                   | **Ensemble KNN 78%**                                         |
-| ![Immagine Grafico SVM](./weightedknn76%.JPG) | ![Immagine Grafico SVM](/home/federico/git/Cashierless/EnsembleLearningSubspKNN78%.JPG) |
+| SVM 77%                                                    | Tree 65%                                                                |
+| ---------------------------------------------------------- | ----------------------------------------------------------------------- |
+| ![Immagine Grafico SVM](./presentation/SVM77%.JPG)         | ![Immagine Grafico SVM](./presentation/Mediumtree65%.JPG)               |
+| **KNN 76%**                                                | **Ensemble KNN 78%**                                                    |
+| ![Immagine Grafico SVM](./presentation/weightedknn76%.JPG) | ![Immagine Grafico SVM](./presentation/EnsembleLearningSubspKNN78%.JPG) |
 
 SVM, Ensemble KNN e KNN hanno mostrato accuratezza simile, Tree invece ha mostrato un'accuratezza molto inferiore.
 

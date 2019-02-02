@@ -21,8 +21,8 @@ function [label,score] = ClassifyImage(imgPath,threshold,netFilePath,modelFilePa
     
     % inizializzo il classificatore e lo utilizzo per classificare l'img
     Var1 = 0;
-    features = featuresimg;
-    T1 = table(Var1, features);
+    Var2 = featuresimg;
+    T1 = table(Var1, Var2);
     [label, score] = trainedModel.predictFcn(T1);
    
     % soglio con una soglia preimpostata per decidere se l'oggetto è

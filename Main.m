@@ -5,9 +5,9 @@ close all;
 TEST MAIN
 %}
 
-imgPath = 'birra1.jpg';
-netFile = 'alex72.mat';
-modelFile = 'cubicknn767.mat';
+imgPath = 'path/to/image';
+netFile = 'path/to/cnn';
+modelFile = 'path/to/classifier';
 T = 0.50;
 
 [label, score] = ClassifyImage(imgPath,T,netFile,modelFile);
