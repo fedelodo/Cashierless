@@ -23,6 +23,11 @@ Le classi di oggetti che abbiamo deciso di riconoscere sono:
 * Spezie
 * Zucchero
 
+E' possibile settare una soglia che stabilisce, nel caso in cui si tenti di classificare un oggetto non 
+appartente ad alcuna classe, se l'oggetto è riconosciuto o meno. In ogni caso è possibile 
+ottenere come risultato un array di score che rappresenta quanto il classificatore è sicuro
+che l'oggetto appartenga a una delle classi sopracitate.
+
 ### Pipeline
 
 ![Pipeline](./presentation/pipelineh.jpeg)
@@ -96,7 +101,7 @@ L' Estrazione di features avviene utilizzando una Convolutional Neural Network.
 Abbiamo utilizzato due differenti modelli di rete  con la tecnica del
 *transfer learning*:
 * AlexNet
-* Googlenet
+* GoogleNet
 
 Per entrambe le reti sono stati eliminati gli ultimi layer della rete
 pre-addestrata e sostituiti con dei nuovi layer in modo tale da ridurre
@@ -111,7 +116,7 @@ Si è utilizzato un classificatore del tipo Ensemble KNN.
 
 Al classificatore vengono dati in input le features estratte dall' immagine con la CNN.
 
-Si è utilizza la tecnica della combinazione di più classificatori KNN per migliorare l'accuratezza.
+Si è utilizzata la tecnica della combinazione di più classificatori KNN per migliorare l'accuratezza.
 
 E' stato scelto di utilizzare KNN in quanto permette una classificazione robusta e in tempi rapidi.
 
@@ -133,6 +138,9 @@ Sono stati testati gli spazi HSV e YCbCr
 * Per l'HSV è stata testata la tinta per individuare meglio zone di colore diverso
 	e segmentare conseguentemente
 * Per l'YCbCr sono stati testati i canali di crominanza per lo stesso motivo
+
+In conclusione, è stato adottato lo spazio RGB in quanto sono stati ottenuti risultati più robusti e contorni
+più delineati calcolando gli edge per ogni colore ed unendoli.
 
 ***Utilizzo di altri algoritmi di edge detection***
 
@@ -176,14 +184,30 @@ Le prestazioni dei vari classificatori sono state monitorate utilizzando una con
 
 | SVM 77%                                                    | Tree 65%                                                                |
 | ---------------------------------------------------------- | ----------------------------------------------------------------------- |
-| ![Immagine Grafico SVM](./presentation/SVM77%.JPG)         | ![Immagine Grafico SVM](./presentation/Mediumtree65%.JPG)               |
+| ![Immagine Grafico SVM](./presentation/SVM77.JPG)         | ![Immagine Grafico SVM](./presentation/Mediumtree65.JPG)               |
 | **KNN 76%**                                                | **Ensemble KNN 78%**                                                    |
-| ![Immagine Grafico SVM](./presentation/weightedknn76%.JPG) | ![Immagine Grafico SVM](./presentation/EnsembleLearningSubspKNN78%.JPG) |
+| ![Immagine Grafico SVM](./presentation/weightedknn76.JPG) | ![Immagine Grafico SVM](./presentation/EnsembleLearningSubspKNN78.JPG) |
 
 SVM, Ensemble KNN e KNN hanno mostrato accuratezza simile, Tree invece ha mostrato un'accuratezza molto inferiore.
 
 ## Conclusione
 
 Abbiamo deciso di usare Alexnet in quanto più semplice e con tempi di training inferiori e un' insieme di classificatori KNN in quanto ci garantivano la miglior accuratezza nel riconoscimento pur essendo classificatori molto semplici e che richiedono poche risorse.
+
+## Divisione del lavoro
+Le principali macro-aree su cui abbiamo lavorato sono:
+* Preprocessing e generazione del contrasted set 
+    * Principale contribuente : Di Gennaro Luca
+* Training della CNN ed estrazione delle feature
+    * Principale contribuente : Lodovici Federico
+* Riconoscimento di una immagine :
+    * Entrambi abbiamo contribuito in questo campo
+    
+Il nostro obiettivo era mantenere il carico di lavoro il più possibile equivalente ed entrambi
+abbiamo testato e perfezionato il lavoro l'uno dell'altro; pertanto è difficile stabilire con
+certezza una percentuale di chi ha lavorato di più e chi di meno.
+
+Siamo certi che, se si voglia stimare una percentuale, ognuno ha svolto circa il 50% 
+del lavoro necessario per implementare il progetto.
 
 # Demo
